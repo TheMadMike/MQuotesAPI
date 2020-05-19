@@ -26,8 +26,9 @@ router.get('/:id', async (request, response) => {
     response.status(400);
     response.send(`Error: ${response.statusCode}`);
   } else {
-    const quote = db.getQuoteById(request.params.id);
-    response.json(quote);
+    db.getQuoteById(request.params.id).then((quote) => {
+      response.json(quote);
+    });
   }
 });
 

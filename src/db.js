@@ -17,7 +17,7 @@ class Database {
       const results = (result) ? result.rows : null;
       client.release();
 
-      return results;
+      return results[0];
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
