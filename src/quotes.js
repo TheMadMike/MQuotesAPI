@@ -6,11 +6,12 @@ const db = new Database();
 
 const router = express.Router();
 
-router.get('/random', (request, response) => {
-  response.json({
-    quote: 'Random quote',
-    author: 'Unknown'
-  });
+router.get('/random', async (request, response) => {
+  const max = await db.getQuoteCount() - 1;
+  const id = Math.floor(Math.random() * Math.floor(max)) + 1;
+  const quote = await db.getQuoteById(id);
+
+  response.json(quote);
 });
 
 router.get('/daily', (request, response) => {
@@ -26,9 +27,8 @@ router.get('/:id', async (request, response) => {
     response.status(400);
     response.send(`Error: ${response.statusCode}`);
   } else {
-    db.getQuoteById(request.params.id).then((quote) => {
-      response.json(quote);
-    });
+    const quote = await db.getQuoteById(request.params.id);
+    response.json(quote);
   }
 });
 

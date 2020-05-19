@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { Pool } = require('pg');
 
 class Database {
@@ -10,19 +11,28 @@ class Database {
     });
   }
 
-  async getQuoteById(id) {
+  async query(queryString) {
     try {
       const client = await this.pool.connect();
-      const result = await client.query(`SELECT * FROM quotes WHERE id=${id}`);
+      const result = await client.query(queryString);
       const results = (result) ? result.rows : null;
       client.release();
 
-      return results[0];
+      return results;
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error(error);
       return null;
     }
+  }
+
+  async getQuoteById(id) {
+    const quote = await this.query(`SELECT * FROM quotes WHERE id=${id}`);
+    return quote[0];
+  }
+
+  async getQuoteCount() {
+    const count = await this.query('SELECT id FROM quotes ORDER BY id DESC LIMIT 1');
+    return count[0].id;
   }
 }
 
