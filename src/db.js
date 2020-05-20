@@ -27,6 +27,9 @@ class Database {
 
   async getQuoteById(id) {
     const quote = await this.query(`SELECT * FROM quotes WHERE id=${id}`);
+    quote[0].author = quote[0].author || 'Unknown';
+    quote[0].author = quote[0].author.trim();
+    quote[0].quote = quote[0].quote.trim();
     return quote[0];
   }
 
