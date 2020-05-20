@@ -6,20 +6,10 @@ Base URL: https://mquotesapi.herokuapp.com/
 
 # Usage
 
-### Get quote by id:
+### Get quote by id: `/<id>`
 
-```
-  /<id>
-```
+### Random quote: `/random`
 
-### Get random quote:
+### Quote of the day: `/daily`
 
-```
-  /random
-```
-
-### Get API info
-
-```
-  /
-```
+### API info and version: `/`
