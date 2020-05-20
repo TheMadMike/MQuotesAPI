@@ -1,7 +1,7 @@
 {
   "name": "mquotesapi",
-  "version": "1.0.0",
-  "description": "Simple and free RESTful API serving over 1000 motivational quotes!",
+  "version": "1.1.0",
+  "description": "Simple and free RESTful API serving over 500 motivational quotes!",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
