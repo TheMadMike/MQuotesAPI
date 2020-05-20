@@ -4,6 +4,8 @@ Over 500 motivational quotes for free!
 
 Base URL: https://mquotesapi.herokuapp.com/
 
+Request rate limit: 24 requests per minute
+
 # Usage
 
 ### Get quote by id: `/<id>`

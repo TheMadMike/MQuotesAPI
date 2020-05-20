@@ -8,7 +8,7 @@ const port = process.env.PORT || 8080;
 
 const limiter = rateLimit({
   windowMs: 5 * 60 * 1000,
-  max: 60
+  max: 120
 });
 
 const {
