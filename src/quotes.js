@@ -1,5 +1,5 @@
 const express = require('express');
-
+const asyncHandler = require('express-async-handler');
 const Database = require('./db');
 
 const db = new Database();
@@ -18,15 +18,15 @@ function isNextDay() {
   return (elapsed >= 24);
 }
 
-router.get('/random', async (request, response) => {
+router.get('/random', asyncHandler(async (request, response) => {
   const max = await db.getQuoteCount() - 1;
   const id = Math.floor(Math.random() * Math.floor(max)) + 1;
   const quote = await db.getQuoteById(id);
 
   response.json(quote);
-});
+}));
 
-router.get('/daily', async (request, response) => {
+router.get('/daily', asyncHandler(async (request, response) => {
   if (isNextDay() || (dailyId === 1)) {
     const max = await db.getQuoteCount() - 1;
     dailyId = Math.floor(Math.random() * Math.floor(max)) + 1;
@@ -34,17 +34,19 @@ router.get('/daily', async (request, response) => {
 
   const quote = await db.getQuoteById(dailyId);
   response.json(quote);
-});
+}));
 
-router.get('/:id', async (request, response) => {
+router.get('/:id', asyncHandler(async (request, response) => {
   // eslint-disable-next-line no-restricted-globals
   if (isNaN(request.params.id)) {
-    response.status(400);
-    response.send(`Error: ${response.statusCode}`);
+    response.status(404).send({
+      status: 404,
+      error: 'Not found'
+    });
   } else {
     const quote = await db.getQuoteById(request.params.id);
     response.json(quote);
   }
-});
+}));
 
 module.exports = router;

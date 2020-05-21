@@ -29,4 +29,13 @@ app.get('/', (request, response) => {
 app.use('/', quotes);
 app.use(limiter);
 
+app.use((error, request, response) => {
+  response.status(error.status || 500).send({
+    error: {
+      status: error.status || 500,
+      message: error.message || 'Internal Server Error',
+    }
+  });
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}...`));
