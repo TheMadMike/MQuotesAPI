@@ -20,7 +20,6 @@ class Database {
 
       return results;
     } catch (error) {
-      console.error(error);
       return null;
     }
   }
