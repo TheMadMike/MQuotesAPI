@@ -1,8 +1,6 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
-const Database = require('./db');
-
-const db = new Database();
+const db = require('./db');
 
 const router = express.Router();
 

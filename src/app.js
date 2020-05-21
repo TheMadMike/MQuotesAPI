@@ -1,6 +1,10 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 
+const db = require('./db');
+
+db.connect();
+
 const app = express();
 
 const limiter = rateLimit({
@@ -35,5 +39,7 @@ app.use((error, request, response, next) => {
     }
   });
 });
+
+process.on('exit', () => db.disconnect());
 
 module.exports = app;

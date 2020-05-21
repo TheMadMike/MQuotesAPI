@@ -11,23 +11,30 @@ class Database {
     });
   }
 
-  async query(queryString) {
+  async connect() {
     try {
-      const client = await this.pool.connect();
-      const result = await client.query(queryString);
-      const results = (result) ? result.rows : null;
-      client.release();
-
-      return results;
+      this.client = await this.pool.connect();
     } catch (error) {
-      return null;
+      console.error(error);
     }
+  }
+
+  disconnect() {
+    if (this.client !== undefined) {
+      this.client.end();
+    }
+  }
+
+  async query(queryString) {
+    const result = await this.client.query(queryString);
+    const results = (result) ? result.rows : null;
+    return results;
   }
 
   async getQuoteById(id) {
     const quote = await this.query(`SELECT * FROM quotes WHERE id=${id}`);
 
-    if (quote == null) {
+    if (quote[0] === undefined) {
       const error = new Error('Not found');
       error.status = 404;
       throw error;
@@ -42,13 +49,10 @@ class Database {
 
   async getQuoteCount() {
     const count = await this.query('SELECT id FROM quotes ORDER BY id DESC LIMIT 1');
-
-    if (count == null) {
-      throw new Error();
-    }
-
     return count[0].id;
   }
 }
 
-module.exports = Database;
+const db = new Database();
+
+module.exports = db;
