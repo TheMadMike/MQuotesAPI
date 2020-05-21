@@ -39,8 +39,8 @@ router.get('/daily', asyncHandler(async (request, response) => {
 router.get('/:id', asyncHandler(async (request, response) => {
   // eslint-disable-next-line no-restricted-globals
   if (isNaN(request.params.id)) {
-    const error = new Error('Not found');
-    error.status = 404;
+    const error = new Error('Bad request');
+    error.status = 400;
     throw error;
   } else {
     const quote = await db.getQuoteById(request.params.id);

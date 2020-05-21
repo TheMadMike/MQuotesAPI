@@ -27,14 +27,27 @@ class Database {
 
   async getQuoteById(id) {
     const quote = await this.query(`SELECT * FROM quotes WHERE id=${id}`);
+
+    if (quote == null) {
+      const error = new Error('Not found');
+      error.status = 404;
+      throw error;
+    }
+
     quote[0].author = quote[0].author || 'Unknown';
     quote[0].author = quote[0].author.trim();
     quote[0].quote = quote[0].quote.trim();
+
     return quote[0];
   }
 
   async getQuoteCount() {
     const count = await this.query('SELECT id FROM quotes ORDER BY id DESC LIMIT 1');
+
+    if (count == null) {
+      throw new Error();
+    }
+
     return count[0].id;
   }
 }
