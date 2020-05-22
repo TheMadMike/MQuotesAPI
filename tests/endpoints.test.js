@@ -42,6 +42,16 @@ describe('GET /:id', () => {
   });
 });
 
+describe('GET /random', () => {
+  it('responds with proper json data', async (done) => {
+    const response = await request(app).get('/random').expect('Content-Type', /json/);
+    expect(response.status).toBe(200);
+    expect(response.body.quote).toBeDefined();
+    expect(response.body.author).toBeDefined();
+    done();
+  });
+});
+
 beforeAll(async () => {
   if (!db.connected) {
     await db.connect();
