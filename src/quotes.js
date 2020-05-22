@@ -34,15 +34,19 @@ router.get('/daily', asyncHandler(async (request, response) => {
   response.json(quote);
 }));
 
-router.get('/:id', asyncHandler(async (request, response) => {
-  // eslint-disable-next-line no-restricted-globals
-  if (isNaN(request.params.id)) {
-    const error = new Error('Bad request');
-    error.status = 400;
-    throw error;
-  } else {
-    const quote = await db.getQuoteById(request.params.id);
-    response.json(quote);
+router.get('/:id', asyncHandler(async (request, response, next) => {
+  try {
+    // eslint-disable-next-line no-restricted-globals
+    if (isNaN(request.params.id)) {
+      const error = new Error('Bad request');
+      error.status = 400;
+      throw error;
+    } else {
+      const quote = await db.getQuoteById(request.params.id);
+      response.json(quote);
+    }
+  } catch (error) {
+    next(error);
   }
 }));
 

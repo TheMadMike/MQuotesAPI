@@ -9,19 +9,25 @@ class Database {
         rejectUnauthorized: false
       }
     });
+
+    this.connected = false;
   }
 
   async connect() {
     try {
-      this.client = await this.pool.connect();
+      if (!this.connected) {
+        this.client = await this.pool.connect();
+        this.connected = true;
+      }
     } catch (error) {
       console.error(error);
     }
   }
 
   disconnect() {
-    if (this.client !== undefined) {
+    if (this.client !== undefined && this.connected) {
       this.client.end();
+      this.connected = false;
     }
   }
 

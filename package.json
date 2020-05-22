@@ -4,7 +4,8 @@
   "description": "Simple and free RESTful API serving over 500 motivational quotes!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --detectOpenHandles --testTimeout=10000",
+    "test:watch": "jest --watch --detectOpenHandles --testTimeout=10000",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
@@ -22,7 +23,9 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
-    "nodemon": "^2.0.4"
+    "jest": "^26.0.1",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "express": "^4.17.1",
