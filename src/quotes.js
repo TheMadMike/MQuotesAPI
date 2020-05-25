@@ -1,20 +1,9 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
+const seedrandom = require('seedrandom');
 const db = require('./db');
 
 const router = express.Router();
-
-let dailyId = 1;
-
-const today = Date.now();
-
-function isNextDay() {
-  let elapsed = Date.now() - today;
-  elapsed = Math.floor(elapsed / 1000);
-  elapsed = Math.floor(elapsed / 3600);
-
-  return (elapsed >= 24);
-}
 
 router.get('/random', asyncHandler(async (request, response) => {
   const max = await db.getQuoteCount() - 1;
@@ -25,11 +14,10 @@ router.get('/random', asyncHandler(async (request, response) => {
 }));
 
 router.get('/daily', asyncHandler(async (request, response) => {
-  if (isNextDay() || (dailyId === 1)) {
-    const max = await db.getQuoteCount() - 1;
-    dailyId = Math.floor(Math.random() * Math.floor(max)) + 1;
-  }
-
+  const today = Date.now();
+  const max = await db.getQuoteCount() - 1;
+  // convert Date.now() from miliseconds to days and generate quote for each day
+  const dailyId = Math.floor(seedrandom(Math.floor((today / 1000) / 3600) / 24)() * max) + 1;
   const quote = await db.getQuoteById(dailyId);
   response.json(quote);
 }));
